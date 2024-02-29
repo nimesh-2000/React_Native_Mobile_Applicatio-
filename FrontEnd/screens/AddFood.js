@@ -13,7 +13,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, Button, FlatList, Alert, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, Button, FlatList, Alert, ImageBackground,Modal,TouchableOpacity,TouchableHighlight } from 'react-native';
 import axios from 'axios';
 import cartImage from '../assets/7889361.jpg'
 //import backgroundImage from '../assets/7889361.jpg'
@@ -26,6 +26,7 @@ const AddPhoneScreen = ({ navigation }) => {
     const [qty, setQty] = useState('');
     const [image, setImage] = useState(null);
     const [pickedDocument, setPickedDocument] = useState(null);
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         fetchPhones();
@@ -64,6 +65,7 @@ const AddPhoneScreen = ({ navigation }) => {
         //     console.error('Error adding phone:', error);
         //     Alert.alert('Error', 'Failed to add phone');
         //   });
+        setShowAlert(true);
     };
 
     const pickImage = () => {
@@ -116,9 +118,9 @@ const AddPhoneScreen = ({ navigation }) => {
         // <View style={styles.container}>
         <ImageBackground source={cartImage} style={styles.container}>
             <View style={styles.card}>
-                <Text style={{color:'white',fontWeight:'bold', fontSize:20}}>Add Food</Text>
+                <Text style={{color:'white',fontWeight:'bold', fontSize:20}}>Add Item</Text>
                 <TextInput
-                    placeholder="Food"
+                    placeholder="Item"
                     value={phoneModel}
                     onChangeText={setPhoneModel}
                     style={styles.input}
@@ -138,12 +140,34 @@ const AddPhoneScreen = ({ navigation }) => {
                     style={styles.input}
                     placeholderTextColor="white"
                 />
-                <Button title="Pick Image" onPress={pickDocument} />
-                {pickedDocument && (
-        <Image source={{ uri: pickedDocument.uri }} style={{ width: 200, height: 200 }} />
-      )}
                 
-                <Button title="Add Phone" onPress={handleAddPhone} />
+      
+                
+                <TouchableHighlight
+                    style={[styles.btn, { backgroundColor: 'pink',marginTop:'5%',marginBottom:'5%', height: '10%', width: '40%', alignItems: 'center', justifyContent: 'center',borderRadius: 5, }]}
+                    underlayColor="#70A843"
+                    onPress={handleAddPhone}
+                >
+                    <Text style={styles.btnText}>Add Item</Text>
+                </TouchableHighlight>
+                <Button title="Back" onPress={() => navigation.navigate('Home')}  /> 
+
+                <Modal
+                    visible={showAlert}
+                    transparent
+                    animationType="fade"
+                    onRequestClose={() => setShowAlert(false)}
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.alertContainer}>
+                            <Text style={styles.alertTitle}>Item Added</Text>
+                            <Text style={styles.alertMessage}>The item has been successfully added..!</Text>
+                            <TouchableOpacity onPress={() => setShowAlert(false)}>
+                                <Text style={styles.alertButton}>OK</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
             </View>
 
             <FlatList
@@ -152,7 +176,7 @@ const AddPhoneScreen = ({ navigation }) => {
                 renderItem={renderItem}
             />
 
-            <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+            {/* <Button title="Back" onPress={() => navigation.navigate('Home')} /> */}
         </ImageBackground>
         // </View>
 
@@ -204,6 +228,31 @@ const styles = StyleSheet.create({
     details: {
         flex: 1,
         marginRight: 10,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    },
+    alertContainer: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+    },
+    alertTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    alertMessage: {
+        fontSize: 16,
+        marginBottom: 20,
+    },
+    alertButton: {
+        fontSize: 16,
+        color: 'blue',
     },
 });
 

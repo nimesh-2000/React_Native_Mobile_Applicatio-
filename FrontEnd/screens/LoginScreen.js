@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
         <Heading style={{...style.heading,textAlign: 'center'}} size="xl" color="pink.500" bold>
         WELCOME {'\n'}TO
         {'\n'}
-        FOOD STORE
+        GROCERY STORE
         </Heading>
         <Image
           style={{ marginBottom: '10%' }}
